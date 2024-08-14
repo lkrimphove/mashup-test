@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>MashUp Test</title>
+    </head>
+    <body>
+        <div>
+            <h2>ID:</h2>
+            <h3 id="data_id"></h3>
+        </div>
+        <div>
+            <h2>Name:</h2>
+            <h3 id="data_name"></h3>
+        </div>
+
+        <script>
+            const pa = new URLSearchParams(window.location.search);
+            id = pa.get("id");
+            name = pa.get("name");
+            document.getElementById("data_id").innerHTML = id;
+            document.getElementById("data_name").innerHTML = name;
+        </script>
+    </body>
+</html>
