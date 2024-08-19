@@ -23,11 +23,6 @@
                 
                 document.getElementById("bp_id").innerHTML = bp_id;
 
-                var newScript = document.createElement("script");
-                newScript.src = `https://cdns.gigya.com/js/gigya.js?apikey=${apiKey}`;
-                target.appendChild(newScript);
-
-                /*
                 let url = `https://accounts.eu2.gigya.com/accounts.getAccountInfo?ApiKey=${apiKey}&userKey=${userKey}&secret=${secret}&UID=${bp_id}`;
 
                 try {
@@ -42,22 +37,9 @@
                 } catch (error) {
                     console.error('Error fetching data:', error);
                 }
-                    */
             }
 
             fetchData();
-            debugger;
-        </script>
-        <script>
-                const pa = new URLSearchParams(window.location.search);
-                let bp_id = pa.get("bp_id");
-
-            var params = {
-                "UID":"bp_id",
-                "include":"identities-active,identities-all,identities-global,loginIDs,emails,profile,data, password,lastLoginLocation, regSource,irank,rba,subscriptions,userInfo",
-                "extraProfileFields":"languages,address,phones, education, honors, publications, patents, certifications, professionalHeadline, bio, industry, specialties, work, skills, religion, politicalView, interestedIn, relationshipStatus, hometown, favorites, followersCount, followingCount, username, locale, verified, timezone, likes, samlData"
-            }
-            gigya.accounts.getAccountInfo(params);
             debugger;
         </script>
     </body>
