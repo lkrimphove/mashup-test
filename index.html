@@ -6,19 +6,25 @@
     <body>
         <div>
             <h2>ID:</h2>
-            <h3 id="data_id"></h3>
+            <h3 id="bp_id"></h3>
         </div>
         <div>
-            <h2>Name:</h2>
+            <h2>Email:</h2>
             <h3 id="data_name"></h3>
         </div>
 
         <script>
             const pa = new URLSearchParams(window.location.search);
-            id = pa.get("id");
-            name = pa.get("name");
-            document.getElementById("data_id").innerHTML = id;
-            document.getElementById("data_name").innerHTML = name;
+            const userKey = pa.get("userKey");
+            const secret = pa.get("secret");
+            const apiKey = pa.get("apiKey");
+            let bp_id = pa.get("bp_id");
+            
+            document.getElementById("bp_id").innerHTML = bp_id;
+            
+            let url = `https://accounts.eu2.gigya.com/accounts.getAccountInfo?ApiKey=${apiKey}&userKey=${userKey}&secret=${secret}&UID=${bp_id}`
+            let response = fetch(url);
+            debugger;
         </script>
     </body>
 </html>
