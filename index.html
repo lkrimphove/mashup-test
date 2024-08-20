@@ -27,13 +27,13 @@
 
             const url = `${base_url}?UID=${bp_id}`
             const credentials = btoa(`${username}:${password}`);
+            const headers = new Headers();
+            headers.append('Authorization', `Basic ${credentials}`)
 
             try {
                 const response = await fetch(url, {
                     method: 'GET',
-                    headers: {
-                        'Authorization': `Basic ${credentials}`
-                    }
+                    headers: headers
                 });
 
                 if (!response.ok) {
