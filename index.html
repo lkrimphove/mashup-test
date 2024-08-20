@@ -18,9 +18,9 @@
     <script>
         async function fetchData() {
             const pa = new URLSearchParams(window.location.search);
-            const base_url = pa.get("userKey");
-            const username = pa.get("secret");
-            const password = pa.get("apiKey");
+            const base_url = pa.get("base_url");
+            const username = pa.get("username");
+            const password = pa.get("password");
             const bp_id = pa.get("bp_id");
 
             document.getElementById("bp_id").innerHTML = bp_id;
@@ -35,7 +35,7 @@
                         'Authorization': `Basic ${credentials}`
                     }
                 });
-                
+
                 if (!response.ok) {
                     throw new Error(`Response status: ${response.status}`);
                 }
