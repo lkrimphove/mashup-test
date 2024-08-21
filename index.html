@@ -20,7 +20,7 @@
             const pa = new URLSearchParams(window.location.search);
             const base_url = pa.get("base_url");
             const username = pa.get("username");
-            const password = pa.get("password");
+            const password = decodeURIComponent(pa.get("password"));
             const bp_id = pa.get("bp_id");
 
             document.getElementById("bp_id").innerHTML = bp_id;
