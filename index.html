@@ -1,56 +1,77 @@
 <!DOCTYPE html>
-<html>
-
 <head>
-    <title>MashUp Test</title>
+  <title>MashUp Test</title>
 </head>
-
 <body>
-    <div>
-        <h2>ID:</h2>
-        <h3 id="bp_id"></h3>
-    </div>
-    <div>
-        <h2>Email:</h2>
-        <h3 id="data_name"></h3>
-    </div>
+  <h1>MashUp Test</h1>
+   <div>
+    <p>Account Technical ID: <span id="accountIdDisplay">‑</span></p>
+    <button id="openBtn">Send OpenObject Event</button>
+  </div>
 
-    <script>
-        async function fetchData() {
-            const pa = new URLSearchParams(window.location.search);
-            const base_url = pa.get("base_url");
-            const username = pa.get("username");
-            const password = decodeURIComponent(pa.get("password"));
-            const bp_id = pa.get("bp_id");
+  <hr>
 
-            document.getElementById("bp_id").innerHTML = bp_id;
+  <div>
+    <h2>Send Custom Message</h2>
+    <label for="customMessage">Enter message as JSON:</label>
+    <textarea id="customMessage">
+{
+  "type": "OpenObject",
+  "entityType": "Account",
+  "entityId": "1234567890"
+}
+    </textarea>
+    <button id="sendCustomBtn">Send Custom Message</button>
+    <p><strong>Example:</strong></p>
+    <code>{ "type": "Refresh", "entityType": "Quote" }</code>
+  </div>
 
-            const url = `${base_url}?UID=${bp_id}`
-            const credentials = btoa(`${username}:${password}`);
-            const headers = new Headers();
-            headers.append('Authorization', `Basic ${credentials}`)
+  <script>
+    // Helper: read query param
+    function getParam(name) {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name);
+    }
 
-            try {
-                const response = await fetch(url, {
-                    method: 'GET',
-                    headers: headers
-                });
+    const accountId = getParam('accountId');
+    document.getElementById('accountIdDisplay').textContent = accountId || '(missing)';
 
-                if (!response.ok) {
-                    throw new Error(`Response status: ${response.status}`);
-                }
-                const json = await response.json();
-                console.log(json);
+    document.getElementById('openBtn').addEventListener('click', () => {
+      if (!accountId) {
+        alert('No accountId parameter passed.');
+        return;
+      }
 
-                document.getElementById("bp_id").innerHTML = json.profile.email;
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        }
+      const eventPayload = {
+        type: 'OpenObject', // standard event type
+        entityType: 'Account',
+        entityId: accountId
+      };
 
-        fetchData();
-        debugger;
-    </script>
+      // posting to parent frame
+      window.parent.postMessage(eventPayload, '*');
+      console.log('Posted OpenObject', eventPayload);
+    });
+
+    // listen to messages from parent if needed
+    window.addEventListener('message', (msg) => {
+      console.log('Received message from parent:', msg.data);
+      // TODO: handle if any responses come from SAP UI
+    });
+
+    // Custom message sender
+    document.getElementById('sendCustomBtn').addEventListener('click', () => {
+      const input = document.getElementById('customMessage').value;
+
+      try {
+        const parsed = JSON.parse(input);
+        window.parent.postMessage(parsed, '*');
+        console.log('Posted custom message:', parsed);
+      } catch (e) {
+        alert('Invalid JSON. Please check your input.');
+        console.error('JSON parsing error:', e);
+      }
+    });
+  </script>
 </body>
-
 </html>
